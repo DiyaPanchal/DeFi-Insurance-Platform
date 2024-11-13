@@ -191,13 +191,13 @@ function User() {
     const makeStorageClient = () => {
         return new Web3Storage({ token: `${web3StorageApiKey}` })
     }
-
+    
     const uploadImageHandler = async () => {
         const fileInput = document.getElementById('upload-image');
         const pathname = fileInput.files[0].name;
         setIsUploading(true);
         const cid = await uploadToIPFS(fileInput.files);
-
+        console.log(pathname,"--3");
         if (cid.length) {
             toast.success("Uploaded to IPFS", {
                 position: toast.POSITION.TOP_CENTER
@@ -214,11 +214,25 @@ function User() {
         })
     }
 
+    // const uploadToIPFS = async (files) => {
+    //     const client = makeStorageClient()
+    //     const cid = await client.put(files)
+    //     return cid;
+    // }
+
+
     const uploadToIPFS = async (files) => {
-        const client = makeStorageClient()
-        const cid = await client.put(files)
+      console.log(files,"--4");
+      const client = makeStorageClient();
+      try {
+        const cid = await client.put(files); // Standard file upload method
+        console.log(cid,"--1"); 
         return cid;
-    }
+      } catch (error) {
+        console.error("Failed to upload to IPFS:", error);
+        throw error;
+      }
+    };
 
     const metadata = async () => {
         const { name, age, email, profileURI } = formInput;
@@ -227,6 +241,7 @@ function User() {
             new File([data], 'metadata.json')
         ]
         const metadataCID = await uploadToIPFS(files);
+        console.log(metadataCID,"--2");
         return `https://${metadataCID}.ipfs.w3s.link/metadata.json`
     }
     /*------------------------------------------------------*/

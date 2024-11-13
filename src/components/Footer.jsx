@@ -95,80 +95,111 @@ function Footer() {
 
   return (
     <Container>
-      <div className='pinsurance'>
-        <div className='text-container'>
-          <p className='my-pinsurance'>Pinsurance</p>
+      <div className="pinsurance">
+        <div className="text-container">
+          <p className="my-pinsurance">Pinsurance</p>
         </div>
       </div>
-      <a
-        href='https://github.com/anubhav11156/Pinsurance'
-        className='source-code-div'
-        target='_blank'
-      >
-        <div>
-          <img src='/images/github-logo.png' />
+      <footer className="footer">
+        <div className="footer-container">
+          {/* Logo and Description */}
+          <div className="footer-section">
+            <h2 className="footer-logo">DeFi Health Insurance</h2>
+            <p className="footer-description">
+              A decentralized platform offering secure, transparent, and
+              accessible health insurance solutions through blockchain
+              technology.
+            </p>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li>
+                <a href="/about">About Us</a>
+              </li>
+              <li>
+                <a href="/services">Our Services</a>
+              </li>
+              <li>
+                <a href="/faq">FAQs</a>
+              </li>
+              <li>
+                <a href="/contact">Contact</a>
+              </li>
+              <li>
+                <a href="/privacy">Privacy Policy</a>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Information */}
+          <div className="footer-section">
+            <h3>Contact Us</h3>
+            <p>Email: support@defihealth.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: 123 Blockchain Ave, Crypto City</p>
+          </div>
+
+          {/* Social Media Icons */}
+          <div className="footer-section">
+            <h3>Follow Us</h3>
+            <div className="social-icons">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-twitter"></i> {/* FontAwesome icons */}
+              </a>
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <i className="fab fa-facebook"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <p>Source Code</p>
-      </a>
 
-      <div
-        className='contributor-1'
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gridGap: "10px",
-          padding: "30px",
-        }}
-      >
-        <FooterCard
-          name='Jyotirmoy Karmakar'
-          state='Assam, India'
-          twitter='https://twitter.com/LucidJoyy'
-          linkedIn='https://www.linkedin.com/in/lucidjoy/'
-          github='https://github.com/LucidJoy'
-        />
-        <FooterCard
-          name='Jyotirmoy Karmakar'
-          state='Assam, India'
-          twitter='https://twitter.com/LucidJoyy'
-          linkedIn='https://www.linkedin.com/in/lucidjoy/'
-          github='https://github.com/LucidJoy'
-        />
-        <FooterCard
-          name='Jyotirmoy Karmakar'
-          state='Assam, India'
-          twitter='https://twitter.com/LucidJoyy'
-          linkedIn='https://www.linkedin.com/in/lucidjoy/'
-          github='https://github.com/LucidJoy'
-        />
-        <FooterCard
-          name='Jyotirmoy Karmakar'
-          state='Assam, India'
-          twitter='https://twitter.com/LucidJoyy'
-          linkedIn='https://www.linkedin.com/in/lucidjoy/'
-          github='https://github.com/LucidJoy'
-        />
-      </div>
+        {/* Footer Bottom */}
+        <div className="footer-bottom">
+          <p>
+            &copy; {new Date().getFullYear()} DeFi Health Insurance. All rights
+            reserved.
+          </p>
+        </div>
+      </footer>
+      
 
-      <div className='mint-div'>
-        <div className='heading'>
+      <div className="mint-div">
+        <div className="heading">
           <p>Import & Mint fake USDC for testing this dapp.</p>
         </div>
-        <div className='mint-button' onClick={copyAddress}>
+        <div className="mint-button" onClick={copyAddress}>
           <p>Click to copy fake USDC contract address.</p>
         </div>
-        <div className='input-div'>
+        <div className="input-div">
           <input
-            type='text'
-            placeholder='Address'
+            type="text"
+            placeholder="Address"
             onChange={(e) => {
               setAddress(e.target.value);
             }}
           />
         </div>
-        <div className='mint-button' onClick={mintFake}>
+        <div className="mint-button" onClick={mintFake}>
           {!isMinting && <p>Mint 5000 USDC </p>}
-          {isMinting && <ClipLoader color='#ffffff' size={13} />}
+          {isMinting && <ClipLoader color="#ffffff" size={13} />}
         </div>
       </div>
     </Container>
@@ -408,6 +439,39 @@ const Container = styled.div`
 
       p {
         margin: 0;
+      }
+
+      .footer-section {
+        background-color:'#fcba03';
+        padding: 20px;
+        color: #fff;
+        text-align: left;
+      }
+
+      .footer-section h3 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #fff;
+      }
+
+      .footer-section ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin: 8px 0;
+      }
+
+      .footer-section ul li a {
+        color: #ccc;
+        text-decoration: none;
+        font-size: 1em;
+        transition: color 0.3s;
+      }
+
+      .footer-section ul li a:hover {
+        color: #fff;
       }
     }
   }

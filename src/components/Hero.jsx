@@ -14,7 +14,7 @@ function Hero() {
       <Text>
         <div className='main-text'>
           <p>
-            Peer to Peer <span>blockchain based</span> Car Insurance
+            Peer to Peer <span>blockchain based</span> Health Insurance
           </p>
         </div>
         <div className='buttons'>
@@ -31,13 +31,13 @@ function Hero() {
           <img src='/images/Vector.png' />
         </div>
         <div className='car'>
-          <img src='/images/sports-car.png' />
+          <img src='/images/HealthInsurance.png' />
         </div>
         <div className='sheild'>
-          <img
+          {/* <img
             src='/images/shield-check.png'
             style={{ width: "180px", height: "180px" }}
-          />
+          /> */}
         </div>
       </Image>
       <div className='bar'></div>
@@ -148,7 +148,7 @@ const Image = styled.div`
   .car {
     position: absolute;
     top: 4rem;
-    right: 10rem;
+    right: 15rem;
     display: flex;
     justify-content: center;
 

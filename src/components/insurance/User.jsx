@@ -185,102 +185,91 @@ function User() {
     /*-------------------------------------------------------------------*/
 
     /*--------------------IPFS code to upload metadata-------------------*/
+const web3StorageApiKey = process.env.REACT_APP_WEB3_STORAGE;
 
-    const web3StorageApiKey = process.env.REACT_APP_WEB3_STORAGE;
+const makeStorageClient = () => {
+  return new Web3Storage({ token: web3StorageApiKey });
+};
 
-    const makeStorageClient = () => {
-        return new Web3Storage({ token: `${web3StorageApiKey}` })
-    }
-    
-    const uploadImageHandler = async () => {
-        const fileInput = document.getElementById('upload-image');
-        const pathname = fileInput.files[0].name;
-        setIsUploading(true);
-        const cid = await uploadToIPFS(fileInput.files);
-        console.log(pathname,"--3");
-        if (cid.length) {
-            toast.success("Uploaded to IPFS", {
-                position: toast.POSITION.TOP_CENTER
-            });
-        } else {
-            toast.error("IPFS upload failed!", {
-                position: toast.POSITION.TOP_CENTER
-            });
-        }
-        setIsUploading(false);
-        setFormInput({
-            ...formInput,
-            profileURI: `https://${cid}.ipfs.w3s.link/${pathname}`
-        })
-    }
+const uploadToIPFS = async (files) => {
+  const client = makeStorageClient();
+  try {
+    const cid = await client.put(files); // Upload files to IPFS
+    console.log("Uploaded to IPFS with CID:", cid);
+    return cid;
+  } catch (error) {
+    console.error("Failed to upload to IPFS:", error);
+    throw new Error("IPFS upload failed");
+  }
+};
 
-    // const uploadToIPFS = async (files) => {
-    //     const client = makeStorageClient()
-    //     const cid = await client.put(files)
-    //     return cid;
-    // }
+const uploadImageHandler = async () => {
+  const fileInput = document.getElementById("upload-image");
+  const pathname = fileInput.files[0].name;
+  setIsUploading(true);
+  try {
+    const cid = await uploadToIPFS(fileInput.files); // Upload image
+    console.log(`${pathname} uploaded with CID:`, cid);
+    toast.success("Uploaded to IPFS", { position: toast.POSITION.TOP_CENTER });
 
+    setFormInput({
+      ...formInput,
+      profileURI: `https://${cid}.ipfs.w3s.link/${pathname}`,
+    });
+  } catch (error) {
+    toast.error("IPFS upload failed!", { position: toast.POSITION.TOP_CENTER });
+  } finally {
+    setIsUploading(false);
+  }
+};
 
-    const uploadToIPFS = async (files) => {
-      console.log(files,"--4");
-      const client = makeStorageClient();
-      try {
-        const cid = await client.put(files); // Standard file upload method
-        console.log(cid,"--1"); 
-        return cid;
-      } catch (error) {
-        console.error("Failed to upload to IPFS:", error);
-        throw error;
-      }
-    };
+const metadata = async () => {
+  const { name, age, email, profileURI } = formInput;
+  const data = JSON.stringify({ name, age, email, profileURI });
+  const files = [new File([data], "metadata.json")];
 
-    const metadata = async () => {
-        const { name, age, email, profileURI } = formInput;
-        const data = JSON.stringify({ name, age, email, profileURI });
-        const files = [
-            new File([data], 'metadata.json')
-        ]
-        const metadataCID = await uploadToIPFS(files);
-        console.log(metadataCID,"--2");
-        return `https://${metadataCID}.ipfs.w3s.link/metadata.json`
-    }
-    /*------------------------------------------------------*/
+  try {
+    const metadataCID = await uploadToIPFS(files); // Upload metadata
+    console.log("Metadata uploaded with CID:", metadataCID);
+    return `https://${metadataCID}.ipfs.w3s.link/metadata.json`;
+  } catch (error) {
+    console.error("Failed to upload metadata to IPFS:", error);
+    throw new Error("Metadata upload failed");
+  }
+};
 
+const createAccountHandler = async () => {
+  setIsCreatingAccount(true);
+  try {
+    const metadatURI = await metadata(); // Get metadata URI
+    console.log("Metadata URI:", metadatURI);
 
-    /*------------------Create account----------------------*/
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://endpoints.omniatech.io/v1/fantom/testnet/public"
+    );
+    const wallet = new ethers.Wallet(ownerPrivateKey);
+    const signer = wallet.connect(provider);
+    const pinsuranceContract = new ethers.Contract(
+      pinsuranceContractAddress,
+      pinsuranceAbi.abi,
+      signer
+    );
 
-    const createAccountHandler = async () => {
-        setIsCreatingAccount(true);
-        const metadatURI = await metadata();
-        console.log('uri : ', metadatURI);
-        const provider = new ethers.providers.JsonRpcProvider('https://endpoints.omniatech.io/v1/fantom/testnet/public');
-        const wallet = new ethers.Wallet(ownerPrivateKey);
-        const signer = wallet.connect(provider);
-        const pinsuranceContract = new ethers.Contract(
-            pinsuranceContractAddress,
-            pinsuranceAbi.abi,
-            signer
-        )
-        const create = await pinsuranceContract.createUser(
-            address,
-            metadatURI
-        )
-        await create.wait()
-            .then(() => {
-                toast.success("Account created!", {
-                    position: toast.POSITION.TOP_CENTER
-                });
-                setuserHaveAccouint(true);
-                setIsCreatingAccount(false);
-                window.location.reload();
-            }).catch((e) => {
-                toast.error("Failed to create account!", {
-                    position: toast.POSITION.TOP_CENTER
-                });
-                console.error(e);
-                setIsCreatingAccount(false);
-            })
-    }
+    const create = await pinsuranceContract.createUser(address, metadatURI);
+    await create.wait();
+
+    toast.success("Account created!", { position: toast.POSITION.TOP_CENTER });
+    setuserHaveAccount(true);
+  } catch (error) {
+    toast.error("Failed to create account!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    console.error("Account creation error:", error);
+  } finally {
+    setIsCreatingAccount(false);
+  }
+};
+
 
     /*--------------------------------------------------------------------------*/
 

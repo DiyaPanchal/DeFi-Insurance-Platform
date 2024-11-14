@@ -6,7 +6,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import copy from "copy-to-clipboard";
-import FooterCard from "./FooterCard";
+import { FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 function Footer() {
   const [isMinting, setIsMinting] = useState(false);
@@ -95,6 +95,27 @@ function Footer() {
 
   return (
     <Container>
+      <div className="mint-div">
+        <div className="heading">
+          <p>Import & Mint fake USDC for testing this dapp.</p>
+        </div>
+        <div className="mint-button" onClick={copyAddress}>
+          <p>Click to copy fake USDC contract address.</p>
+        </div>
+        <div className="input-div">
+          <input
+            type="text"
+            placeholder="Address"
+            onChange={(e) => {
+              setAddress(e.target.value);
+            }}
+          />
+        </div>
+        <div className="mint-button" onClick={mintFake}>
+          {!isMinting && <p>Mint 5000 USDC </p>}
+          {isMinting && <ClipLoader color="#ffffff" size={13} />}
+        </div>
+      </div>
       <div className="pinsurance">
         <div className="text-container">
           <p className="my-pinsurance">Pinsurance</p>
@@ -102,16 +123,6 @@ function Footer() {
       </div>
       <footer className="footer">
         <div className="footer-container">
-          {/* Logo and Description */}
-          <div className="footer-section">
-            <h2 className="footer-logo">DeFi Health Insurance</h2>
-            <p className="footer-description">
-              A decentralized platform offering secure, transparent, and
-              accessible health insurance solutions through blockchain
-              technology.
-            </p>
-          </div>
-
           {/* Navigation Links */}
           <div className="footer-section">
             <h3>Quick Links</h3>
@@ -151,21 +162,21 @@ function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="fab fa-twitter"></i> {/* FontAwesome icons */}
+                <FaTwitter />
               </a>
               <a
                 href="https://linkedin.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="fab fa-linkedin"></i>
+                <FaLinkedin />
               </a>
               <a
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <i className="fab fa-facebook"></i>
+                <FaFacebook />
               </a>
             </div>
           </div>
@@ -179,29 +190,6 @@ function Footer() {
           </p>
         </div>
       </footer>
-      
-
-      <div className="mint-div">
-        <div className="heading">
-          <p>Import & Mint fake USDC for testing this dapp.</p>
-        </div>
-        <div className="mint-button" onClick={copyAddress}>
-          <p>Click to copy fake USDC contract address.</p>
-        </div>
-        <div className="input-div">
-          <input
-            type="text"
-            placeholder="Address"
-            onChange={(e) => {
-              setAddress(e.target.value);
-            }}
-          />
-        </div>
-        <div className="mint-button" onClick={mintFake}>
-          {!isMinting && <p>Mint 5000 USDC </p>}
-          {isMinting && <ClipLoader color="#ffffff" size={13} />}
-        </div>
-      </div>
     </Container>
   );
 }
@@ -209,16 +197,14 @@ function Footer() {
 export default Footer;
 
 const Container = styled.div`
-  position: relative;
-  height: 600px;
-  display: flex;
+  position: static;
+  display: block;
   align-items: center;
   justify-content: center;
   margin-top: 30px;
   border-top: 1px solid rgba(130, 71, 230, 0.4);
-
-  background-color: rgba(10, 10, 13, 255);
-
+  background-color: #141414;
+  color: rgba(255, 255, 255, 0.75);
   .pinsurance {
     padding-left: 20px;
     flex: 1;
@@ -242,133 +228,75 @@ const Container = styled.div`
       }
     }
   }
+  .footer {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #141414;
 
-  .contributor-1 {
-    flex: 1;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .main-container {
-      margin-left: 20px;
-      border: 1px solid white;
-      height: 70%;
-      width: 300px;
+    .footer-container {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.1);
-
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border-radius: 2px;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-
-      .image-div {
-        height: 180px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-
-        .profile-pic-div {
-          margin-top: 55px;
-          height: 110px;
-          width: 110px;
-          border-radius: 70px;
-          overflow: hidden;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          border: 2px solid #3adfae;
-
-          img {
-            width: 110px;
-          }
-        }
-      }
-
-      .name-div {
-        margin-top: 10px;
-        height: 100px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 0px;
-        p {
-          margin: 0;
-          margin-top: 3px;
-          display: block;
-          font-size: 16px;
-          color: rgba(255, 255, 255, 0.5);
-          letter-spacing: 1px;
-        }
-      }
-
-      .social-handle-div {
-        flex: 1;
-        width: 100%;
-        display: flex;
-        margin-left: 19px;
-        justify-content: center;
-
-        .handles {
-          margin-top: 40px;
-          margin-right: 20px;
-          width: 30px;
-          height: 30px;
-          img {
-            width: 100%;
-          }
-          transition: all 0.25s;
-        }
-        .handles:hover {
-          scale: 1.15;
-        }
-      }
-    }
-  }
-
-  .source-code-div {
-    text-decoration: none;
-    color: white;
-    width: 160px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: color 0.15s;
-
-    &:hover {
-      color: #3adfae;
+      justify-content: space-around;
+      flex-wrap: wrap;
     }
 
-    div {
-      margin-left: -5px;
+    .footer-section {
+      flex: 1;
+      min-width: 200px;
+      margin: 20px;
+
+      h3 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        color: #fffff;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      ul li {
+        margin: 8px 0;
+      }
+
+      ul li a {
+        color: rgba(255, 255, 255, 0.75);
+        text-decoration: none;
+        font-size: 1em;
+        transition: color 0.3s ease;
+      }
+
+      ul li a:hover {
+        color: #fcba03;
+      }
+    }
+
+    .social-icons {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100%;
-      width: 35px;
-
-      img {
-        width: 28px;
-      }
+      gap: 15px;
+      font-size: 1.5em;
     }
 
-    p {
-      font-size: 16px;
-      margin-left: 5px;
+    .social-icons a {
+      color: rgba(255, 255, 255, 0.75);
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #fcba03;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 20px;
+      font-size: 0.9em;
+      color: rgba(255, 255, 255, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
   }
 
   .mint-div {
-    position: absolute;
+    position: static;
     margin-top: 3.5rem;
     top: 2rem;
     left: 2rem;
@@ -440,39 +368,8 @@ const Container = styled.div`
       p {
         margin: 0;
       }
-
-      .footer-section {
-        background-color:'#fcba03';
-        padding: 20px;
-        color: #fff;
-        text-align: left;
-      }
-
-      .footer-section h3 {
-        font-size: 1.5em;
-        margin-bottom: 15px;
-        color: #fff;
-      }
-
-      .footer-section ul {
-        list-style-type: none;
-        padding: 0;
-      }
-
-      .footer-section ul li {
-        margin: 8px 0;
-      }
-
-      .footer-section ul li a {
-        color: #ccc;
-        text-decoration: none;
-        font-size: 1em;
-        transition: color 0.3s;
-      }
-
-      .footer-section ul li a:hover {
-        color: #fff;
-      }
     }
   }
 `;
+
+    
